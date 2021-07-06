@@ -11,6 +11,7 @@ const Strings = {
   noTokenFound: 'No token found. Please login.',
   searchUser: 'Search Users using names.',
   searchPosts: 'Search Posts using Id, type and Message.',
+  loginValidation: 'Checking for login validation.',
 };
 
 export default Strings;

@@ -5,7 +5,7 @@ import { fetchUser } from '../../api';
 import { LocalStorageKeys, Routes, Strings } from '../../constants';
 import { useFormInput } from '../../hooks';
 import { updateUser } from '../../store/userSlice';
-import { LocalStorageData, User } from '../../types';
+import { LocalStorageData } from '../../types';
 import './Login.css';
 
 interface LoginProps extends RouteComponentProps {}
@@ -32,12 +32,13 @@ const Login: React.FC<LoginProps> = ({ history }): JSX.Element => {
     if (localDataString) {
       try {
         const localData: LocalStorageData = localDataString && JSON.parse(localDataString);
-        console.log('debug: localdata: ', localData);
 
         if (isDateDiffIsOneHr(new Date(localData.time), new Date())) {
           dispatch(updateUser(localData.userDetails));
           setIsFetchingData(false);
           history.push(Routes.postPath);
+        } else {
+          setIsFetchingData(false);
         }
       } catch (err) {
         setIsFetchingData(false);
@@ -50,15 +51,10 @@ const Login: React.FC<LoginProps> = ({ history }): JSX.Element => {
 
   const isDateDiffIsOneHr = (dateA: Date, dateB: Date): boolean => {
     let timeDiff = (dateB.getTime() - dateA.getTime()) / 1000;
-    console.log('debug: timediff in mili: ', timeDiff);
 
     if (Math.abs(Math.round((timeDiff /= 60))) <= 60) {
-      console.log('debug: true');
-
       return true;
     } else {
-      console.log('debug: false');
-
       return false;
     }
   };
@@ -90,8 +86,18 @@ const Login: React.FC<LoginProps> = ({ history }): JSX.Element => {
       });
   };
 
-  return (
-    <div className="container">
+  const renderLoading = (): JSX.Element => {
+    return (
+      <div className="login-card">
+        <div className="loading">
+          <p>{Strings.loginValidation}</p>
+        </div>
+      </div>
+    );
+  };
+
+  const renderLogin = (): JSX.Element => {
+    return (
       <div className="login-card">
         <div className="header">
           <h3>{Strings.login}</h3>
@@ -120,8 +126,10 @@ const Login: React.FC<LoginProps> = ({ history }): JSX.Element => {
           />
         </div>
       </div>
-    </div>
-  );
+    );
+  };
+
+  return <div className="container">{isFetchingData ? renderLoading() : renderLogin()}</div>;
 };
 
 export default Login;
