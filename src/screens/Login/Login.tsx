@@ -3,9 +3,10 @@ import { useDispatch } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { fetchUser } from '../../api';
 import { LocalStorageKeys, Routes, Strings } from '../../constants';
+import { fetchTokenFromLocalStorage } from '../../helpers';
 import { useFormInput } from '../../hooks';
 import { updateUser } from '../../store/userSlice';
-import { LocalStorageData } from '../../types';
+import { LocalStorageData, User } from '../../types';
 import './Login.css';
 
 interface LoginProps extends RouteComponentProps {}
@@ -27,36 +28,15 @@ const Login: React.FC<LoginProps> = ({ history }): JSX.Element => {
   }, []);
 
   const fetchDataFromLocalStorage = (): void => {
-    const localDataString: string | null = localStorage.getItem(LocalStorageKeys.userDetails);
-
-    if (localDataString) {
-      try {
-        const localData: LocalStorageData = localDataString && JSON.parse(localDataString);
-
-        if (isDateDiffIsOneHr(new Date(localData.time), new Date())) {
-          dispatch(updateUser(localData.userDetails));
-          setIsFetchingData(false);
-          history.push(Routes.postPath);
-        } else {
-          setIsFetchingData(false);
-        }
-      } catch (err) {
+    fetchTokenFromLocalStorage()
+      .then((user: User) => {
+        dispatch(updateUser(user));
         setIsFetchingData(false);
-        localStorage.removeItem(LocalStorageKeys.userDetails);
-      }
-    } else {
-      setIsFetchingData(false);
-    }
-  };
-
-  const isDateDiffIsOneHr = (dateA: Date, dateB: Date): boolean => {
-    let timeDiff = (dateB.getTime() - dateA.getTime()) / 1000;
-
-    if (Math.abs(Math.round((timeDiff /= 60))) <= 60) {
-      return true;
-    } else {
-      return false;
-    }
+        history.push(Routes.postPath);
+      })
+      .catch(() => {
+        setIsFetchingData(false);
+      });
   };
 
   const handleLogin = () => {

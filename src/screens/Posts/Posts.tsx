@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
 import { fetchPost } from '../../api';
-import { Strings } from '../../constants';
+import { Routes, Strings } from '../../constants';
+import {
+  fetchTokenFromLocalStorage,
+  sortByDateAscending,
+  sortByDateDescending,
+} from '../../helpers';
 import { useFormInput } from '../../hooks';
 import { addPosts, selectPostsWithUserCount } from '../../store/postSlice';
-import { selectUser } from '../../store/userSlice';
-import { Post, PostWithUserCount } from '../../types';
+import { selectUser, updateUser } from '../../store/userSlice';
+import { Post, PostWithUserCount, User } from '../../types';
+import { ArrowUpward, ArrowDownward } from '@material-ui/icons';
 import './Posts.css';
 
-const Posts: React.FC = (): JSX.Element => {
+interface PostsProps extends RouteComponentProps {}
+
+const Posts: React.FC<PostsProps> = ({ history }): JSX.Element => {
   const user = useSelector(selectUser);
   const posts = useSelector(selectPostsWithUserCount);
 
@@ -18,7 +27,6 @@ const Posts: React.FC = (): JSX.Element => {
   const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>(Strings.empty);
 
   const [selectedUser, setSelectedUser] = useState<string>(Strings.empty);
   const [userList, setUserList] = useState<PostWithUserCount[]>(posts || []);
@@ -28,8 +36,7 @@ const Posts: React.FC = (): JSX.Element => {
     if (user.sl_token && posts.length === 0) {
       getPosts();
     } else {
-      setIsLoading(false);
-      setError(Strings.noTokenFound);
+      fetchDataFromLocalStorage();
     }
   }, [user]);
 
@@ -71,6 +78,17 @@ const Posts: React.FC = (): JSX.Element => {
     }
   }, [userSearch.value]);
 
+  const fetchDataFromLocalStorage = (): void => {
+    fetchTokenFromLocalStorage()
+      .then((user: User) => {
+        dispatch(updateUser(user));
+      })
+      .catch(() => {
+        setIsLoading(false);
+        history.replace(Routes.basePath);
+      });
+  };
+
   const getPosts = async () => {
     let posts: any = [];
     for (let i = 1; i <= 10; i++) {
@@ -93,6 +111,14 @@ const Posts: React.FC = (): JSX.Element => {
     });
 
     return res;
+  };
+
+  const onClickUp = (): void => {
+    setPostsForSelectedUser(sortByDateAscending(postsForSelectedUser.slice()));
+  };
+
+  const onClickDown = (): void => {
+    setPostsForSelectedUser(sortByDateDescending(postsForSelectedUser.slice()));
   };
 
   const renderLoading = (message?: string): JSX.Element => {
@@ -161,6 +187,15 @@ const Posts: React.FC = (): JSX.Element => {
     return (
       <div className="right">
         <div className="search-bar-right">
+          <div className="icon-container">
+            <div className="icon" onClick={onClickUp}>
+              <ArrowUpward style={{ color: '#fff', marginRight: 5 }} />
+            </div>
+
+            <div className="icon" onClick={onClickDown}>
+              <ArrowDownward style={{ color: '#fff', marginLeft: 5 }} />
+            </div>
+          </div>
           <input
             type="text"
             {...postSearch}
@@ -188,11 +223,7 @@ const Posts: React.FC = (): JSX.Element => {
     );
   };
 
-  return (
-    <div className="container">
-      {isLoading ? renderLoading() : error ? renderLoading(error) : renderPosts()}
-    </div>
-  );
+  return <div className="container">{isLoading ? renderLoading() : renderPosts()}</div>;
 };
 
 export default Posts;
