@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Getting Started with this app
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -39,8 +39,24 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## Login screen snapshot.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+<img width="1141" alt="Screenshot 2021-07-08 at 2 37 24 AM" src="https://user-images.githubusercontent.com/62182948/124829101-c4cfb580-df95-11eb-8f06-30787e91fff5.png">
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Login screen with error.
+
+<img width="1145" alt="Screenshot 2021-07-08 at 2 37 34 AM" src="https://user-images.githubusercontent.com/62182948/124829210-f21c6380-df95-11eb-9d11-358040d451d9.png">
+
+## Post list screen.
+
+<img width="1158" alt="Screenshot 2021-07-08 at 2 38 03 AM" src="https://user-images.githubusercontent.com/62182948/124829271-0a8c7e00-df96-11eb-90e7-683302f1e8e8.png">
+
+## About
+
+After the successful login the user is greeted with the Post Details page. 
+
+The logged-in user can select a specefic user from the left panel and all the posts related to the selected user will be listed inside the right panel. The list of Posts are sortable (descending & ascending order) and searchable. Post list is searchable by Post ID, Post Type and Post Content.
+
+The user list in the left panel is searchable by user-names only.
+
+The logged-in users credential is chached locally in localStorage and token is valid for 60 mins only. After the token expiry if the user tries to open the app, or try to go to Post List page, the app will bring the user back to the login page.
