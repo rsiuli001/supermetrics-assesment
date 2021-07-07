@@ -1,0 +1,19 @@
+.user-card {
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  margin-top: 5px;
+  padding: 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-count {
+  height: 30px;
+  width: 30px;
+  border-radius: 20px;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

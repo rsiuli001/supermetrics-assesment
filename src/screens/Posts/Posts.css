@@ -1,0 +1,125 @@
+.loading-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+}
+
+.container {
+  height: 100vh;
+}
+
+.content {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: flex-start;
+  background-color: #000000;
+  height: 100%;
+}
+
+.left {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.user-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  overflow-y: scroll;
+  height: 95%;
+  width: 100%;
+}
+
+.user-card {
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  margin-top: 5px;
+  padding: 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-count {
+  height: 30px;
+  width: 30px;
+  border-radius: 20px;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.right {
+  width: 90%;
+  /* display: flex; */
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.search-bar-right {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.icon-container {
+  display: flex;
+  width: 20%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.post-container {
+  margin-top: 10px;
+  height: 95%;
+  overflow-y: scroll;
+}
+
+.post-card {
+  height: 250px;
+  background-color: #fff;
+  margin: 5px 10px 0px 10px;
+  padding: 1px 10px 0px 10px;
+}
+
+.post-header {
+  height: 30px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #787878;
+}
+
+.post-content {
+  display: flex;
+  height: 80%;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 5px;
+  overflow-y: scroll;
+  text-align: start;
+}
+
+.icon:hover {
+  cursor: pointer;
+}
+
+.loading {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}

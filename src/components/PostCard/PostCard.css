@@ -1,0 +1,27 @@
+.post-card {
+  height: 250px;
+  background-color: #fff;
+  margin: 5px 10px 0px 10px;
+  padding: 1px 10px 0px 10px;
+}
+
+.post-header {
+  height: 30px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #787878;
+}
+
+.post-content {
+  display: flex;
+  height: 80%;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 5px;
+  overflow-y: scroll;
+  text-align: start;
+}
