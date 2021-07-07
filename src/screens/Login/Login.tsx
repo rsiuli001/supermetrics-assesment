@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { fetchUser } from '../../api';
-import { LocalStorageKeys, Routes, Strings } from '../../constants';
+import { Loading } from '../../components';
+import { LocalStorageKeys, Routes, Strings, TestIds } from '../../constants';
 import { fetchTokenFromLocalStorage } from '../../helpers';
 import { useFormInput } from '../../hooks';
 import { updateUser } from '../../store/userSlice';
 import { LocalStorageData, User } from '../../types';
 import './Login.css';
 
-interface LoginProps extends RouteComponentProps {}
+export interface LoginProps extends RouteComponentProps {}
 
 const Login: React.FC<LoginProps> = ({ history }): JSX.Element => {
   const dispatch = useDispatch();
@@ -42,8 +43,7 @@ const Login: React.FC<LoginProps> = ({ history }): JSX.Element => {
   const handleLogin = () => {
     setIsLoading(true);
 
-    // fetchUser(name.value, email.value)
-    fetchUser('ram chandra siuli', 'ram.siuli@gmail.com')
+    fetchUser(name.value, email.value)
       .then((response): any => {
         const dataToStoreLocally: LocalStorageData = {
           time: new Date(),
@@ -66,39 +66,40 @@ const Login: React.FC<LoginProps> = ({ history }): JSX.Element => {
       });
   };
 
-  const renderLoading = (): JSX.Element => {
-    return (
-      <div className="login-card">
-        <div className="loading">
-          <p>{Strings.loginValidation}</p>
-        </div>
-      </div>
-    );
-  };
-
   const renderLogin = (): JSX.Element => {
     return (
       <div className="login-card">
         <div className="header">
-          <h3>{Strings.login}</h3>
+          <h3 data-testid={TestIds.login.header}>{Strings.login}</h3>
         </div>
 
         <div className="login-form">
           <div className="name">
-            <div>{Strings.name}</div>
-            <input type="text" {...name} placeholder={Strings.nameHint} />
+            <div data-testid={TestIds.login.name}>{Strings.name}</div>
+            <input
+              data-testid={TestIds.login.nameInput}
+              type="text"
+              {...name}
+              placeholder={Strings.nameHint}
+            />
           </div>
 
           <div className="email">
-            <div>{Strings.email}</div>
-            <input type="text" {...email} placeholder={Strings.emailHint} />
+            <div data-testid={TestIds.login.email}>{Strings.email}</div>
+            <input
+              data-testid={TestIds.login.emailInput}
+              type="text"
+              {...email}
+              placeholder={Strings.emailHint}
+            />
           </div>
         </div>
 
-        {error && <div className="error">{error}</div>}
+        {error && <div className="error">*{error}</div>}
 
         <div className="button">
           <input
+            data-testid={TestIds.login.loginButton}
             type="button"
             style={{ backgroundColor: isLoading ? '#C8C8C8' : '#85e085' }}
             value={isLoading ? Strings.loading : Strings.go}
@@ -109,7 +110,11 @@ const Login: React.FC<LoginProps> = ({ history }): JSX.Element => {
     );
   };
 
-  return <div className="container">{isFetchingData ? renderLoading() : renderLogin()}</div>;
+  return (
+    <div className="container">
+      {isFetchingData ? <Loading text={Strings.loading} /> : renderLogin()}
+    </div>
+  );
 };
 
 export default Login;

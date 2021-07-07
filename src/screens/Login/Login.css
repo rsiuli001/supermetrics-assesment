@@ -55,4 +55,6 @@ input {
 
 .error {
   color: #c00000;
+  font-size: small;
+  margin-left: 20px;
 }

@@ -1,9 +1,14 @@
 import { useState } from 'react';
 
-const useFormInput = (initialValue: string) => {
+export interface UserFormInput {
+  value: string;
+  onChange: (e: any) => void;
+}
+
+const useFormInput = (initialValue: string): UserFormInput => {
   const [value, setValue] = useState<string>(initialValue);
 
-  const onChange = (e: any) => {
+  const onChange = (e: any): void => {
     setValue(e.target.value);
   };
 
